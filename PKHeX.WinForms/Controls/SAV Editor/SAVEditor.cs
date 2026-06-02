@@ -1,13 +1,15 @@
+using PKHeX.Core;
+using PKHeX.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using PKHeX.Core;
-using PKHeX.Drawing;
 using static PKHeX.Core.MessageStrings;
 
 namespace PKHeX.WinForms.Controls;
@@ -1376,6 +1378,7 @@ public partial class SAVEditor : UserControl, ISlotViewer<PictureBox>, ISaveFile
     }
 
     public void ClickShowdownExportParty(object sender, EventArgs e) => ExportShowdownText(SAV, MsgSimulatorExportParty, sav => sav.PartyData);
+    public void ClickJsonExportParty(object sender, EventArgs e) => ExportPartyJson(SAV, sav => sav.PartyData);
 
     public void ClickShowdownExportCurrentBox(object sender, EventArgs e)
     {
@@ -1395,6 +1398,102 @@ public partial class SAVEditor : UserControl, ISlotViewer<PictureBox>, ISaveFile
             return;
         if (WinFormsUtil.SetClipboardText(result))
             WinFormsUtil.Alert(success);
+    }
+
+    private static void ExportPartyJson(SaveFile sav, Func<SaveFile, IEnumerable<PKM>> fetch)
+    {
+        var list = fetch(sav);
+        var result = ShowdownParsing.GetShowdownSets(list);
+        if (result == null || !result.Any())
+        {
+            return;
+        }
+
+        var programLanguage = Language.GetLanguageValue(Main.Settings.Startup.Language);
+        var settings = Main.Settings.BattleTemplate.Export.GetSettings(programLanguage, sav.Context);
+        var jsonPkmList = new List<JsonPkm>();
+        foreach (var set in result)
+        {
+            jsonPkmList.Add(new JsonPkm(set, settings, sav.Context));
+        }
+
+        var json = JsonSerializer.Serialize(jsonPkmList);
+
+        using var sfd = new SaveFileDialog();
+        sfd.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
+        sfd.FilterIndex = 1;
+        sfd.RestoreDirectory = true;
+        sfd.FileName = Path.GetFileNameWithoutExtension(sav.Metadata.FileName);
+        sfd.Title = "Save Party JSON Export";
+
+        if (sfd.ShowDialog() == DialogResult.OK)
+        {
+            try
+            {
+                File.WriteAllText(sfd.FileName, json);
+                WinFormsUtil.Alert("File saved successfully!");
+            }
+            catch (Exception ex)
+            {
+                WinFormsUtil.Alert($"Failed to save file: {ex.Message}");
+            }
+        }
+    }
+    private class JsonPkm
+    {
+        public int DexNumber { get; set; }
+        public string Name { get; set; }
+        public string Nickname { get; set; }
+        public string FormName { get; set; }
+        public int Level { get; set; }
+        public string Nature { get; set; }
+        public string Ability { get; set; }
+        public string Gender { get; set; }
+        public string HeldItem { get; set; }
+        public int[] EVs { get; set; }
+        public int[] IVs { get; set; }
+        public List<string> Moves { get; set; }
+
+        [JsonConstructor]
+        public JsonPkm() { }
+        public JsonPkm(ShowdownSet pk, BattleTemplateExportSettings settings, EntityContext context)
+        {
+            var strings = settings.Localization.Strings;
+
+            DexNumber = pk.Species;
+            Name = strings.specieslist[pk.Species];
+            Nickname = pk.Nickname;
+            Level = pk.Level;
+            Nature = pk.Nature.ToString();
+            Ability = strings.Ability[pk.Ability];
+            if (pk.Gender < 2)
+            {
+                Gender = pk.Gender == 0 ? "Male" : "Female";
+            }
+            else
+            {
+                Gender = "None";
+            }
+
+            var items = strings.GetItemStrings(context);
+            if ((uint)pk.HeldItem < items.Length)
+            {
+                HeldItem = items[pk.HeldItem];
+            }
+
+            EVs = pk.EVs;
+            IVs = pk.IVs;
+            Moves = [];
+            foreach (var moveId in pk.Moves)
+            {
+                if (moveId <= strings.movelist.Length)
+                {
+                    Moves.Add(strings.movelist[moveId]);
+                }
+            }
+
+            FormName = pk.FormName;
+        }
     }
 
     private void B_OpenUGSEditor_Click(object sender, EventArgs e)

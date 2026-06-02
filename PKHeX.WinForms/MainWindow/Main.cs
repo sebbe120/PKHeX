@@ -497,6 +497,8 @@ public partial class Main : Form
     }
 
     private void ClickShowdownExportParty(object sender, EventArgs e) => C_SAV.ClickShowdownExportParty(sender, e);
+    private void ClickJsonExportParty(object sender, EventArgs e) => C_SAV.ClickJsonExportParty(sender, e);
+
     private void ClickShowdownExportCurrentBox(object sender, EventArgs e) => C_SAV.ClickShowdownExportCurrentBox(sender, e);
 
     // Main Menu Subfunctions
@@ -1076,7 +1078,7 @@ public partial class Main : Form
     private void ClickLegality(object? sender, EventArgs e)
     {
         if (!PKME_Tabs.EditsComplete)
-        { WinFormsUtil.Hand();return; }
+        { WinFormsUtil.Hand(); return; }
 
         var pk = PreparePKM();
 
@@ -1110,8 +1112,8 @@ public partial class Main : Form
         {
             Caption = MsgLegalityPopupCaption,
             Heading = la.Valid ? settings.Lines.Legal : settings.Lines.SInvalid,
-            Icon =    la.Valid ? TaskDialogIcon.ShieldSuccessGreenBar : TaskDialogIcon.ShieldErrorRedBar,
-            Text =    la.Valid ? "" : simpleReport,
+            Icon = la.Valid ? TaskDialogIcon.ShieldSuccessGreenBar : TaskDialogIcon.ShieldErrorRedBar,
+            Text = la.Valid ? "" : simpleReport,
             Expander = new TaskDialogExpander
             {
                 CollapsedButtonText = MsgLegalityPopupCollapsed,

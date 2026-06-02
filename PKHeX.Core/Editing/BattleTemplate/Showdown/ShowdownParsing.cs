@@ -346,12 +346,17 @@ public static class ShowdownParsing
     /// <returns>Consumable list of <see cref="ShowdownSet.Text"/> lines.</returns>
     public static IEnumerable<ShowdownSet> GetShowdownSets(IEnumerable<PKM> data)
     {
+        var result = new List<ShowdownSet>();
         foreach (var pk in data)
         {
             if (pk.Species == 0)
+            {
                 continue;
-            yield return new ShowdownSet(pk);
+            }
+            result.Add(new ShowdownSet(pk));
         }
+
+        return result;
     }
 
     /// <inheritdoc cref="GetShowdownSets(IEnumerable{string},BattleTemplateLocalization)"/>

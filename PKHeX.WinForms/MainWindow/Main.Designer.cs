@@ -30,6 +30,7 @@ namespace PKHeX.WinForms
         public void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             menuStrip1 = new System.Windows.Forms.MenuStrip();
             Menu_File = new System.Windows.Forms.ToolStripMenuItem();
             Menu_Open = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,6 +53,8 @@ namespace PKHeX.WinForms
             Menu_EncDatabase = new System.Windows.Forms.ToolStripMenuItem();
             Menu_BatchEditor = new System.Windows.Forms.ToolStripMenuItem();
             Menu_Folder = new System.Windows.Forms.ToolStripMenuItem();
+            Export_To_Json = new System.Windows.Forms.ToolStripMenuItem();
+            exportPartyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             Menu_Options = new System.Windows.Forms.ToolStripMenuItem();
             Menu_Language = new System.Windows.Forms.ToolStripMenuItem();
             CB_MainLanguage = new System.Windows.Forms.ToolStripComboBox();
@@ -89,7 +92,7 @@ namespace PKHeX.WinForms
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
-            menuStrip1.Size = new System.Drawing.Size(864, 25);
+            menuStrip1.Size = new System.Drawing.Size(864, 24);
             menuStrip1.TabIndex = 1;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -97,7 +100,7 @@ namespace PKHeX.WinForms
             // 
             Menu_File.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { Menu_Open, Menu_Save, Menu_ExportSAV, Menu_Exit });
             Menu_File.Name = "Menu_File";
-            Menu_File.Size = new System.Drawing.Size(39, 21);
+            Menu_File.Size = new System.Drawing.Size(37, 20);
             Menu_File.Text = "File";
             // 
             // Menu_Open
@@ -106,7 +109,7 @@ namespace PKHeX.WinForms
             Menu_Open.Name = "Menu_Open";
             Menu_Open.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O;
             Menu_Open.ShowShortcutKeys = false;
-            Menu_Open.Size = new System.Drawing.Size(141, 22);
+            Menu_Open.Size = new System.Drawing.Size(133, 22);
             Menu_Open.Text = "&Open...";
             Menu_Open.Click += MainMenuOpen;
             // 
@@ -116,7 +119,7 @@ namespace PKHeX.WinForms
             Menu_Save.Name = "Menu_Save";
             Menu_Save.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S;
             Menu_Save.ShowShortcutKeys = false;
-            Menu_Save.Size = new System.Drawing.Size(141, 22);
+            Menu_Save.Size = new System.Drawing.Size(133, 22);
             Menu_Save.Text = "&Save PKM...";
             Menu_Save.Click += MainMenuSave;
             // 
@@ -126,7 +129,7 @@ namespace PKHeX.WinForms
             Menu_ExportSAV.Name = "Menu_ExportSAV";
             Menu_ExportSAV.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E;
             Menu_ExportSAV.ShowShortcutKeys = false;
-            Menu_ExportSAV.Size = new System.Drawing.Size(141, 22);
+            Menu_ExportSAV.Size = new System.Drawing.Size(133, 22);
             Menu_ExportSAV.Text = "&Export SAV...";
             Menu_ExportSAV.Click += ClickExportSAV;
             // 
@@ -136,15 +139,15 @@ namespace PKHeX.WinForms
             Menu_Exit.Name = "Menu_Exit";
             Menu_Exit.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q;
             Menu_Exit.ShowShortcutKeys = false;
-            Menu_Exit.Size = new System.Drawing.Size(141, 22);
+            Menu_Exit.Size = new System.Drawing.Size(133, 22);
             Menu_Exit.Text = "&Quit";
             Menu_Exit.Click += MainMenuExit;
             // 
             // Menu_Tools
             // 
-            Menu_Tools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { Menu_Showdown, Menu_Data, Menu_Folder });
+            Menu_Tools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { Menu_Showdown, Menu_Data, Menu_Folder, Export_To_Json });
             Menu_Tools.Name = "Menu_Tools";
-            Menu_Tools.Size = new System.Drawing.Size(51, 21);
+            Menu_Tools.Size = new System.Drawing.Size(46, 20);
             Menu_Tools.Text = "Tools";
             // 
             // Menu_Showdown
@@ -152,7 +155,7 @@ namespace PKHeX.WinForms
             Menu_Showdown.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { Menu_ShowdownImportPKM, Menu_ShowdownExportPKM, Menu_ShowdownExportParty, Menu_ShowdownExportCurrentBox });
             Menu_Showdown.Image = Properties.Resources.showdown;
             Menu_Showdown.Name = "Menu_Showdown";
-            Menu_Showdown.Size = new System.Drawing.Size(141, 22);
+            Menu_Showdown.Size = new System.Drawing.Size(180, 22);
             Menu_Showdown.Text = "Showdown";
             // 
             // Menu_ShowdownImportPKM
@@ -161,7 +164,7 @@ namespace PKHeX.WinForms
             Menu_ShowdownImportPKM.Name = "Menu_ShowdownImportPKM";
             Menu_ShowdownImportPKM.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T;
             Menu_ShowdownImportPKM.ShowShortcutKeys = false;
-            Menu_ShowdownImportPKM.Size = new System.Drawing.Size(264, 22);
+            Menu_ShowdownImportPKM.Size = new System.Drawing.Size(243, 22);
             Menu_ShowdownImportPKM.Text = "Import Set from Clipboard";
             Menu_ShowdownImportPKM.Click += ClickShowdownImportPKM;
             // 
@@ -171,7 +174,7 @@ namespace PKHeX.WinForms
             Menu_ShowdownExportPKM.Name = "Menu_ShowdownExportPKM";
             Menu_ShowdownExportPKM.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.T;
             Menu_ShowdownExportPKM.ShowShortcutKeys = false;
-            Menu_ShowdownExportPKM.Size = new System.Drawing.Size(264, 22);
+            Menu_ShowdownExportPKM.Size = new System.Drawing.Size(243, 22);
             Menu_ShowdownExportPKM.Text = "Export Set to Clipboard";
             Menu_ShowdownExportPKM.Click += ClickShowdownExportPKM;
             // 
@@ -179,7 +182,7 @@ namespace PKHeX.WinForms
             // 
             Menu_ShowdownExportParty.Image = Properties.Resources.export;
             Menu_ShowdownExportParty.Name = "Menu_ShowdownExportParty";
-            Menu_ShowdownExportParty.Size = new System.Drawing.Size(264, 22);
+            Menu_ShowdownExportParty.Size = new System.Drawing.Size(243, 22);
             Menu_ShowdownExportParty.Text = "Export Party to Clipboard";
             Menu_ShowdownExportParty.Click += ClickShowdownExportParty;
             // 
@@ -187,7 +190,7 @@ namespace PKHeX.WinForms
             // 
             Menu_ShowdownExportCurrentBox.Image = Properties.Resources.export;
             Menu_ShowdownExportCurrentBox.Name = "Menu_ShowdownExportCurrentBox";
-            Menu_ShowdownExportCurrentBox.Size = new System.Drawing.Size(264, 22);
+            Menu_ShowdownExportCurrentBox.Size = new System.Drawing.Size(243, 22);
             Menu_ShowdownExportCurrentBox.Text = "Export Current Box to Clipboard";
             Menu_ShowdownExportCurrentBox.Click += ClickShowdownExportCurrentBox;
             // 
@@ -196,14 +199,14 @@ namespace PKHeX.WinForms
             Menu_Data.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { Menu_LoadBoxes, Menu_DumpBoxes, Menu_DumpBox, Menu_Report, Menu_Database, Menu_MGDatabase, Menu_EncDatabase, Menu_BatchEditor });
             Menu_Data.Image = Properties.Resources.data;
             Menu_Data.Name = "Menu_Data";
-            Menu_Data.Size = new System.Drawing.Size(141, 22);
+            Menu_Data.Size = new System.Drawing.Size(180, 22);
             Menu_Data.Text = "Data";
             // 
             // Menu_LoadBoxes
             // 
             Menu_LoadBoxes.Image = Properties.Resources.load;
             Menu_LoadBoxes.Name = "Menu_LoadBoxes";
-            Menu_LoadBoxes.Size = new System.Drawing.Size(197, 22);
+            Menu_LoadBoxes.Size = new System.Drawing.Size(182, 22);
             Menu_LoadBoxes.Text = "Load Boxes";
             Menu_LoadBoxes.Click += MainMenuBoxLoad;
             // 
@@ -211,7 +214,7 @@ namespace PKHeX.WinForms
             // 
             Menu_DumpBoxes.Image = Properties.Resources.dump;
             Menu_DumpBoxes.Name = "Menu_DumpBoxes";
-            Menu_DumpBoxes.Size = new System.Drawing.Size(197, 22);
+            Menu_DumpBoxes.Size = new System.Drawing.Size(182, 22);
             Menu_DumpBoxes.Text = "Dump Boxes";
             Menu_DumpBoxes.Click += MainMenuBoxDump;
             // 
@@ -219,7 +222,7 @@ namespace PKHeX.WinForms
             // 
             Menu_DumpBox.Image = Properties.Resources.dump;
             Menu_DumpBox.Name = "Menu_DumpBox";
-            Menu_DumpBox.Size = new System.Drawing.Size(197, 22);
+            Menu_DumpBox.Size = new System.Drawing.Size(182, 22);
             Menu_DumpBox.Text = "Dump Box";
             Menu_DumpBox.Click += MainMenuBoxDumpSingle;
             // 
@@ -229,7 +232,7 @@ namespace PKHeX.WinForms
             Menu_Report.Name = "Menu_Report";
             Menu_Report.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R;
             Menu_Report.ShowShortcutKeys = false;
-            Menu_Report.Size = new System.Drawing.Size(197, 22);
+            Menu_Report.Size = new System.Drawing.Size(182, 22);
             Menu_Report.Text = "Box Data &Report";
             Menu_Report.Click += MainMenuBoxReport;
             // 
@@ -239,7 +242,7 @@ namespace PKHeX.WinForms
             Menu_Database.Name = "Menu_Database";
             Menu_Database.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D;
             Menu_Database.ShowShortcutKeys = false;
-            Menu_Database.Size = new System.Drawing.Size(197, 22);
+            Menu_Database.Size = new System.Drawing.Size(182, 22);
             Menu_Database.Text = "PKM &Database";
             Menu_Database.Click += MainMenuDatabase;
             // 
@@ -249,7 +252,7 @@ namespace PKHeX.WinForms
             Menu_MGDatabase.Name = "Menu_MGDatabase";
             Menu_MGDatabase.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G;
             Menu_MGDatabase.ShowShortcutKeys = false;
-            Menu_MGDatabase.Size = new System.Drawing.Size(197, 22);
+            Menu_MGDatabase.Size = new System.Drawing.Size(182, 22);
             Menu_MGDatabase.Text = "&Mystery Gift Database";
             Menu_MGDatabase.Click += MainMenuMysteryDB;
             // 
@@ -259,7 +262,7 @@ namespace PKHeX.WinForms
             Menu_EncDatabase.Name = "Menu_EncDatabase";
             Menu_EncDatabase.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N;
             Menu_EncDatabase.ShowShortcutKeys = false;
-            Menu_EncDatabase.Size = new System.Drawing.Size(197, 22);
+            Menu_EncDatabase.Size = new System.Drawing.Size(182, 22);
             Menu_EncDatabase.Text = "E&ncounter Database";
             Menu_EncDatabase.Click += Menu_EncDatabase_Click;
             // 
@@ -269,7 +272,7 @@ namespace PKHeX.WinForms
             Menu_BatchEditor.Name = "Menu_BatchEditor";
             Menu_BatchEditor.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M;
             Menu_BatchEditor.ShowShortcutKeys = false;
-            Menu_BatchEditor.Size = new System.Drawing.Size(197, 22);
+            Menu_BatchEditor.Size = new System.Drawing.Size(182, 22);
             Menu_BatchEditor.Text = "Batch Editor";
             Menu_BatchEditor.Click += MainMenuBatchEditor;
             // 
@@ -279,15 +282,30 @@ namespace PKHeX.WinForms
             Menu_Folder.Name = "Menu_Folder";
             Menu_Folder.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F;
             Menu_Folder.ShowShortcutKeys = false;
-            Menu_Folder.Size = new System.Drawing.Size(141, 22);
+            Menu_Folder.Size = new System.Drawing.Size(180, 22);
             Menu_Folder.Text = "Open Folder";
             Menu_Folder.Click += MainMenuFolder;
+            // 
+            // Export_To_Json
+            // 
+            Export_To_Json.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { exportPartyToolStripMenuItem });
+            Export_To_Json.Image = Properties.Resources.dump;
+            Export_To_Json.Name = "Export_To_Json";
+            Export_To_Json.Size = new System.Drawing.Size(180, 22);
+            Export_To_Json.Text = "Export to Json";
+            // 
+            // exportPartyToolStripMenuItem
+            // 
+            exportPartyToolStripMenuItem.Name = "exportPartyToolStripMenuItem";
+            exportPartyToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            exportPartyToolStripMenuItem.Text = "Export Party to Json";
+            exportPartyToolStripMenuItem.Click += ClickJsonExportParty;
             // 
             // Menu_Options
             // 
             Menu_Options.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { Menu_Language, Menu_Undo, Menu_Redo, Menu_Settings, Menu_About });
             Menu_Options.Name = "Menu_Options";
-            Menu_Options.Size = new System.Drawing.Size(66, 21);
+            Menu_Options.Size = new System.Drawing.Size(61, 20);
             Menu_Options.Text = "Options";
             // 
             // Menu_Language
@@ -295,14 +313,14 @@ namespace PKHeX.WinForms
             Menu_Language.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { CB_MainLanguage });
             Menu_Language.Image = Properties.Resources.language;
             Menu_Language.Name = "Menu_Language";
-            Menu_Language.Size = new System.Drawing.Size(175, 22);
+            Menu_Language.Size = new System.Drawing.Size(164, 22);
             Menu_Language.Text = "Language";
             // 
             // CB_MainLanguage
             // 
             CB_MainLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             CB_MainLanguage.Name = "CB_MainLanguage";
-            CB_MainLanguage.Size = new System.Drawing.Size(121, 25);
+            CB_MainLanguage.Size = new System.Drawing.Size(121, 23);
             CB_MainLanguage.SelectedIndexChanged += ChangeMainLanguage;
             // 
             // Menu_Undo
@@ -312,7 +330,7 @@ namespace PKHeX.WinForms
             Menu_Undo.Name = "Menu_Undo";
             Menu_Undo.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.U;
             Menu_Undo.ShowShortcutKeys = false;
-            Menu_Undo.Size = new System.Drawing.Size(175, 22);
+            Menu_Undo.Size = new System.Drawing.Size(164, 22);
             Menu_Undo.Text = "Undo Last Change";
             Menu_Undo.Click += ClickUndo;
             // 
@@ -323,7 +341,7 @@ namespace PKHeX.WinForms
             Menu_Redo.Name = "Menu_Redo";
             Menu_Redo.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y;
             Menu_Redo.ShowShortcutKeys = false;
-            Menu_Redo.Size = new System.Drawing.Size(175, 22);
+            Menu_Redo.Size = new System.Drawing.Size(164, 22);
             Menu_Redo.Text = "Redo Last Change";
             Menu_Redo.Click += ClickRedo;
             // 
@@ -333,7 +351,7 @@ namespace PKHeX.WinForms
             Menu_Settings.Name = "Menu_Settings";
             Menu_Settings.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.S;
             Menu_Settings.ShowShortcutKeys = false;
-            Menu_Settings.Size = new System.Drawing.Size(175, 22);
+            Menu_Settings.Size = new System.Drawing.Size(164, 22);
             Menu_Settings.Text = "Settings";
             Menu_Settings.Click += MainMenuSettings;
             // 
@@ -343,7 +361,7 @@ namespace PKHeX.WinForms
             Menu_About.Name = "Menu_About";
             Menu_About.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P;
             Menu_About.ShowShortcutKeys = false;
-            Menu_About.Size = new System.Drawing.Size(175, 22);
+            Menu_About.Size = new System.Drawing.Size(164, 22);
             Menu_About.Text = "About &PKHeX";
             Menu_About.Click += MainMenuAbout;
             // 
@@ -547,6 +565,8 @@ namespace PKHeX.WinForms
         private System.Windows.Forms.SplitContainer splitContainer2;
         private PKHeX.WinForms.Controls.SelectablePictureBox dragout;
         private System.Windows.Forms.PictureBox PB_Legal;
+        private System.Windows.Forms.ToolStripMenuItem Export_To_Json;
+        private System.Windows.Forms.ToolStripMenuItem exportPartyToolStripMenuItem;
     }
 }
 
