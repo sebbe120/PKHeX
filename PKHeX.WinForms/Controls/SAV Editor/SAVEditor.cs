@@ -1476,9 +1476,13 @@ public partial class SAVEditor : UserControl, ISlotViewer<PictureBox>, ISaveFile
             }
 
             var items = strings.GetItemStrings(context);
-            if ((uint)pk.HeldItem < items.Length)
+            if (pk.HeldItem > 0 && (uint)pk.HeldItem < items.Length)
             {
                 HeldItem = items[pk.HeldItem];
+            }
+            else
+            {
+                HeldItem = "None";
             }
 
             EVs = pk.EVs;
